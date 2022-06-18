@@ -5,13 +5,19 @@ import java.util.*
 
 interface TaskManagerRepository {
 
-    fun getTasksList(gregorianCalendar: GregorianCalendar) : LiveData<List<Task>>
+    fun getTasksList(start: GregorianCalendar,
+                     end: GregorianCalendar) : LiveData<List<Task>>
 
-    fun getTask(): LiveData<Task>
+    fun getTasksList(date: GregorianCalendar) : LiveData<List<Task>>
+
+    fun getTaskDatesList(start: GregorianCalendar,
+                         end: GregorianCalendar): LiveData<List<GregorianCalendar>>
+
+    fun getTask(id: Int): Task
 
     fun addTask(task: Task)
 
     fun editTask(task: Task)
 
-    fun removeTask(task: Task)
+    fun removeTask(id: Int)
 }

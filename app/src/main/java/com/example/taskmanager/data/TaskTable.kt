@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.example.taskmanager.domain.PriorityTypes
+import com.example.taskmanager.domain.Task
 import java.util.*
 
 @Entity(tableName = "tasks")
@@ -13,6 +14,7 @@ data class TaskTable(
     @field:TypeConverters(GregorianCalendarConverter::class)
     val taskDate: GregorianCalendar,
     val priorityType: PriorityTypes,
+    val isOutdated: Boolean,
     val isDone: Boolean,
     @PrimaryKey val id: Int
 ) {
