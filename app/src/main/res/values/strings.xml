@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">taskManager</string>
+    <string name="app_name">Менеджер задач</string>
+    <string name="text_hint">Текст задачи</string>
+    <string name="date_hint">Дата окончания</string>
+    <string name="save_btn">Сохранить</string>
+    <string name="description_hint">Описание</string>
 </resources>

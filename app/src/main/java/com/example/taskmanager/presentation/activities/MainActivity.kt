@@ -1,7 +1,9 @@
-package com.example.taskmanager.presentation
+package com.example.taskmanager.presentation.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.FragmentContainer
+import androidx.fragment.app.FragmentContainerView
 import com.example.taskmanager.R
 
 class MainActivity : AppCompatActivity() {
