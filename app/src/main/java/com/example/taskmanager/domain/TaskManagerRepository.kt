@@ -5,6 +5,8 @@ import java.util.*
 
 interface TaskManagerRepository {
 
+    fun getTasksList() : LiveData<List<Task>>
+
     fun getTasksList(start: GregorianCalendar,
                      end: GregorianCalendar) : LiveData<List<Task>>
 
@@ -12,6 +14,8 @@ interface TaskManagerRepository {
 
     fun getTaskDatesList(start: GregorianCalendar,
                          end: GregorianCalendar): LiveData<List<GregorianCalendar>>
+
+    fun getOutdatedTasks(): LiveData<List<Task>>
 
     fun getTask(id: Int): Task
 

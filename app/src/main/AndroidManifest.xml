@@ -9,6 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TaskManager">
+        <activity android:name=".presentation.activities.TaskActivity">
+
+        </activity>
         <activity
             android:name=".presentation.activities.MainActivity"
             android:exported="true">

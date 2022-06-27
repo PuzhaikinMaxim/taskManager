@@ -10,9 +10,7 @@ import java.util.*
 object TaskManagerRepositoryImpl : TaskManagerRepository {
 
     private val tasksList = sortedSetOf<Task>({
-            o1,o2 ->
-            o1.id.compareTo(o2.id)
-            o1.taskDate.compareTo(o2.taskDate)
+            o1,o2 -> o1.id.compareTo(o2.id)
     })
     private val tasksListLD = MutableLiveData<List<Task>>()
     private val datesListLD = MutableLiveData<List<GregorianCalendar>>()
@@ -23,10 +21,21 @@ object TaskManagerRepositoryImpl : TaskManagerRepository {
         autoIncrementId = taskDatabase.taskDao().getLastTaskId()+1
         val today = GregorianCalendar()
         taskDatabase.taskDao().updateOutdatedTasks(today)
+        val list = taskDatabase.taskDao().getTasks()
+        println("-----------------------------------------")
+        for(elem in list){
+            //println(elem.toString())
+        }
+        updateList()
+    }
+
+    override fun getTasksList(): LiveData<List<Task>> {
+        return tasksListLD
     }
 
     override fun getTasksList(start: GregorianCalendar,
                               end: GregorianCalendar): LiveData<List<Task>> {
+        tasksList.clear()
         val taskTableList = taskDatabase.taskDao().getTasksInInterval(start, end)
         for(item in taskTableList){
             tasksList.add(TaskConverter.convertFromTable(item))
@@ -36,10 +45,17 @@ object TaskManagerRepositoryImpl : TaskManagerRepository {
     }
 
     override fun getTasksList(date: GregorianCalendar) : LiveData<List<Task>> {
+        tasksList.clear()
         val taskTableList = taskDatabase.taskDao().getTasksByDay(date)
+        println("-----------------------------------------")
+        println(date.toString())
+        var cnt = 0
         for(item in taskTableList){
+            println(++cnt)
+            println(item.toString())
             tasksList.add(TaskConverter.convertFromTable(item))
         }
+        println(tasksList)
         updateList()
         return tasksListLD
     }
@@ -55,6 +71,16 @@ object TaskManagerRepositoryImpl : TaskManagerRepository {
         }
         datesListLD.value = datesList
         return datesListLD
+    }
+
+    override fun getOutdatedTasks(): LiveData<List<Task>>{
+        tasksList.clear()
+        val taskTableList = taskDatabase.taskDao().getOutdatedTasks()
+        for(item in taskTableList){
+            tasksList.add(TaskConverter.convertFromTable(item))
+        }
+        updateList()
+        return tasksListLD
     }
 
     override fun getTask(id: Int): Task {

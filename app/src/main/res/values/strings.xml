@@ -4,4 +4,6 @@
     <string name="date_hint">Дата окончания</string>
     <string name="save_btn">Сохранить</string>
     <string name="description_hint">Описание</string>
+    <string name="add_btn_content_description">Добавить задачу</string>
+    <string name="activity_main_title">Задачи на сегодня</string>
 </resources>

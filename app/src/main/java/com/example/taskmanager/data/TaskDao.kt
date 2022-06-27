@@ -31,6 +31,12 @@ interface TaskDao {
     @Query("SELECT taskDate FROM tasks WHERE taskDate >= :start AND taskDate < :end")
     fun getTasksDates(start: GregorianCalendar, end: GregorianCalendar): List<Long>
 
+    @Query("SELECT * FROM tasks WHERE isOutdated == :isOutdated")
+    fun getOutdatedTasks(isOutdated: Boolean = OUTDATED): List<TaskTable>
+
+    @Query("SELECT * FROM tasks")
+    fun getTasks(): List<TaskTable>
+
     companion object {
         private const val OUTDATED = true
     }

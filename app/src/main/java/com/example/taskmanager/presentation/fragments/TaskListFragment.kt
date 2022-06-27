@@ -1,43 +1,45 @@
-package com.example.taskmanager.presentation.activities
+package com.example.taskmanager.presentation.fragments
 
-import android.content.Context
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskmanager.R
-import com.example.taskmanager.data.DatabaseInitializer
 import com.example.taskmanager.presentation.TaskAdapter
-import com.example.taskmanager.presentation.viewmodels.MainViewModel
 import com.example.taskmanager.presentation.viewmodels.TaskListViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class MainActivity : AppCompatActivity() {
+class TaskListFragment : Fragment() {
 
     private lateinit var buttonAddTask: FloatingActionButton
     private lateinit var rvTasksList: RecyclerView
     private lateinit var adapter: TaskAdapter
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: TaskListViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        DatabaseInitializer.passContext(this)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        initViews()
-        setupRecyclerView()
-        setupSwipeListener()
-        setupAddButton()
-        viewModel.tasks.observe(this){
-            adapter.taskList = it
-        }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_tasks_list, container, false)
     }
 
-    private fun initViews(){
-        buttonAddTask = findViewById(R.id.button_add_task)
-        rvTasksList = findViewById(R.id.rv_tasks_list)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initViews(view)
+        setupRecyclerView()
+        setupAddButton()
+        setupSwipeListener()
+        viewModel = ViewModelProvider(this).get(TaskListViewModel::class.java)
+    }
+
+    private fun initViews(view: View){
+        buttonAddTask = view.findViewById(R.id.button_add_task)
+        rvTasksList = view.findViewById(R.id.rv_tasks_list)
     }
 
     private fun setupRecyclerView() {
@@ -69,27 +71,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupAddButton() {
-        buttonAddTask.setOnClickListener {
-            val intent = TaskActivity.newIntentAddItem(this)
-            startActivity(intent)
-        }
+
     }
-
-    companion object {
-
-        fun newIntent(context: Context): Intent {
-            return Intent(context, MainActivity::class.java)
-        }
-    }
-
-    /*
-    private fun launchFragment(fragment: Fragment){
-        supportFragmentManager.popBackStack()
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.task_list_container, fragment)
-            .addToBackStack(null)
-            .commit()
-    }
-
-     */
 }
