@@ -19,14 +19,7 @@ object TaskManagerRepositoryImpl : TaskManagerRepository {
 
     init {
         autoIncrementId = taskDatabase.taskDao().getLastTaskId()+1
-        val today = GregorianCalendar()
-        taskDatabase.taskDao().updateOutdatedTasks(today)
-        val list = taskDatabase.taskDao().getTasks()
-        println("-----------------------------------------")
-        for(elem in list){
-            //println(elem.toString())
-        }
-        updateList()
+        taskDatabase.taskDao().updateOutdatedTasks(getTodayDate())
     }
 
     override fun getTasksList(): LiveData<List<Task>> {
@@ -113,6 +106,15 @@ object TaskManagerRepositoryImpl : TaskManagerRepository {
 
     private fun updateList() {
         tasksListLD.value = tasksList.toList()
+    }
+
+    private fun getTodayDate() : GregorianCalendar{
+        val today = GregorianCalendar()
+        return GregorianCalendar(
+            today.get(GregorianCalendar.YEAR),
+            today.get(GregorianCalendar.MONTH),
+            today.get(GregorianCalendar.DAY_OF_MONTH)
+        )
     }
 
 }

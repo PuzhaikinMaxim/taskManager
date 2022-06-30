@@ -3,10 +3,7 @@ package com.example.taskmanager.presentation.viewmodels
 import androidx.lifecycle.ViewModel
 import com.example.taskmanager.data.TaskManagerRepositoryImpl
 import com.example.taskmanager.domain.Task
-import com.example.taskmanager.domain.usecases.EditTaskUseCase
-import com.example.taskmanager.domain.usecases.GetTasksListByDayUseCase
-import com.example.taskmanager.domain.usecases.GetTasksListUseCase
-import com.example.taskmanager.domain.usecases.RemoveTaskUseCase
+import com.example.taskmanager.domain.usecases.*
 import java.util.*
 
 class MainViewModel : ViewModel() {
@@ -17,11 +14,26 @@ class MainViewModel : ViewModel() {
     private val removeTaskUseCase = RemoveTaskUseCase(repository)
     private val editTaskUseCase = EditTaskUseCase(repository)
     private val getTasksListUseCase = GetTasksListUseCase(repository)
+    private val getOutdatedTasksUseCase = GetOutdatedTasksUseCase(repository)
 
     val tasks = getTasksListUseCase.getTasksList()
 
     fun removeTask(task: Task){
         removeTaskUseCase.removeTask(task.id)
+    }
+
+    fun getTasksByDay(day: Long) {
+        getTasksByDay(day)
+    }
+
+    fun getTodayTasks() {
+        val today = getTodayDate()
+        println(today.toString())
+        getTasksListByDayUseCase.getTasksListByDay(today)
+    }
+
+    fun getOutdatedTasks() {
+        getOutdatedTasksUseCase.getOutdatedTasks()
     }
 
     fun changeReadyState(task: Task) {
@@ -30,12 +42,17 @@ class MainViewModel : ViewModel() {
     }
 
     init {
-        val gregorianCalendar = GregorianCalendar(
-            2022,
-            5,
-            27
+        val today = getTodayDate()
+        println(today.toString())
+        getTasksListByDayUseCase.getTasksListByDay(today)
+    }
+
+    private fun getTodayDate() : GregorianCalendar{
+        val today = GregorianCalendar()
+        return GregorianCalendar(
+            today.get(GregorianCalendar.YEAR),
+            today.get(GregorianCalendar.MONTH),
+            today.get(GregorianCalendar.DAY_OF_MONTH)
         )
-        println(gregorianCalendar.toString())
-        getTasksListByDayUseCase.getTasksListByDay(gregorianCalendar)
     }
 }

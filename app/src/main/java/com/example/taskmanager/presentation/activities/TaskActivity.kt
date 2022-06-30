@@ -74,7 +74,7 @@ class TaskActivity : AppCompatActivity(), TaskFragment.OnEditingFinishedListener
     }
 
     override fun onEditingFinished() {
-        val intent = MainActivity.newIntent(this)
+        val intent = MainActivity.newIntent(this,false)
         startActivity(intent)
     }
 }
