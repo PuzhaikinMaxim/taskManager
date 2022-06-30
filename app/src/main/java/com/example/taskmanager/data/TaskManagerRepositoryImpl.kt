@@ -2,6 +2,7 @@ package com.example.taskmanager.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.taskmanager.domain.Day
 import com.example.taskmanager.domain.Task
 import com.example.taskmanager.domain.TaskManagerRepository
 import java.lang.RuntimeException
@@ -13,13 +14,20 @@ object TaskManagerRepositoryImpl : TaskManagerRepository {
             o1,o2 -> o1.id.compareTo(o2.id)
     })
     private val tasksListLD = MutableLiveData<List<Task>>()
-    private val datesListLD = MutableLiveData<List<GregorianCalendar>>()
+    private val datesListLD = MutableLiveData<List<Day>>()
     private val taskDatabase = TaskDatabase.getDatabase()
     private var autoIncrementId = 0
 
     init {
         autoIncrementId = taskDatabase.taskDao().getLastTaskId()+1
         taskDatabase.taskDao().updateOutdatedTasks(getTodayDate())
+        val dayData = taskDatabase.taskDao().getTasksDates(
+            GregorianCalendar(2000,1,1),
+            GregorianCalendar(2030,1,1)
+        )
+        for(data in dayData){
+            println(data)
+        }
     }
 
     override fun getTasksList(): LiveData<List<Task>> {
@@ -54,13 +62,23 @@ object TaskManagerRepositoryImpl : TaskManagerRepository {
     }
 
     override fun getTaskDatesList(start: GregorianCalendar,
-                         end: GregorianCalendar): LiveData<List<GregorianCalendar>> {
-        val datesList = mutableListOf<GregorianCalendar>()
-        val datesInMillis = taskDatabase.taskDao().getTasksDates(start, end)
-        for(dateMillis in datesInMillis){
+                         end: GregorianCalendar): LiveData<List<Day>> {
+        val datesList = mutableListOf<Day>()
+        for(i in 0 until start.getMaximum(GregorianCalendar.DAY_OF_MONTH)){
+            datesList.add(Day(i+1,false))
+        }
+        val datesData = taskDatabase.taskDao().getTasksDates(start, end)
+        for(dateData in datesData){
             val date = GregorianCalendar()
-            date.timeInMillis = dateMillis
-            datesList.add(date)
+            date.timeInMillis = dateData.dayL
+            val dayOfMonth = date.get(GregorianCalendar.DAY_OF_MONTH)
+
+            var isEveryTaskDone = false
+            if(dateData.amountOfAllTasks == dateData.amountOfCompletedTasks)
+                isEveryTaskDone = true
+
+            val day = Day(dayOfMonth,isEveryTaskDone,false)
+            datesList[dayOfMonth-1] = day
         }
         datesListLD.value = datesList
         return datesListLD

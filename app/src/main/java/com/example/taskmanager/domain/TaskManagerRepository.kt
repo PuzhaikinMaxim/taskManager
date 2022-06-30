@@ -13,7 +13,7 @@ interface TaskManagerRepository {
     fun getTasksList(date: GregorianCalendar) : LiveData<List<Task>>
 
     fun getTaskDatesList(start: GregorianCalendar,
-                         end: GregorianCalendar): LiveData<List<GregorianCalendar>>
+                         end: GregorianCalendar): LiveData<List<Day>>
 
     fun getOutdatedTasks(): LiveData<List<Task>>
 
