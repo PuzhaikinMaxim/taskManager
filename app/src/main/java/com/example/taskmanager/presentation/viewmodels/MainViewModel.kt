@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.example.taskmanager.data.TaskManagerRepositoryImpl
 import com.example.taskmanager.domain.Task
 import com.example.taskmanager.domain.usecases.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 class MainViewModel : ViewModel() {
@@ -28,7 +29,6 @@ class MainViewModel : ViewModel() {
 
     fun getTodayTasks() {
         val today = getTodayDate()
-        println(today.toString())
         getTasksListByDayUseCase.getTasksListByDay(today)
     }
 
@@ -43,7 +43,6 @@ class MainViewModel : ViewModel() {
 
     init {
         val today = getTodayDate()
-        println(today.toString())
         getTasksListByDayUseCase.getTasksListByDay(today)
     }
 

@@ -28,6 +28,10 @@ object TaskManagerRepositoryImpl : TaskManagerRepository {
         for(data in dayData){
             println(data)
         }
+        val d = taskDatabase.taskDao().getTasks()
+        for(task in d){
+            println(task)
+        }
     }
 
     override fun getTasksList(): LiveData<List<Task>> {
@@ -78,7 +82,7 @@ object TaskManagerRepositoryImpl : TaskManagerRepository {
                 isEveryTaskDone = true
 
             val day = Day(dayOfMonth,isEveryTaskDone,false)
-            datesList[dayOfMonth-1] = day
+            datesList[dayOfMonth] = day
         }
         datesListLD.value = datesList
         return datesListLD

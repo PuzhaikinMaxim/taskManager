@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
+    private var screenMode = MODE_UNKNOWN
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -130,6 +132,8 @@ class MainActivity : AppCompatActivity() {
             viewModel.getTodayTasks()
         }
         if(extraMode == MODE_OUTDATED){
+            val tvTitle = findViewById<TextView>(R.id.tv_activity_main_title)
+            tvTitle.text = getString(R.string.activity_main_title_unfinished)
             viewModel.getOutdatedTasks()
         }
     }
@@ -148,6 +152,7 @@ class MainActivity : AppCompatActivity() {
         private const val MODE_TODAY = "Mode today"
         private const val MODE_OUTDATED = "Mode outdated"
         private const val MODE_DATE = "Mode date"
+        private const val MODE_UNKNOWN = "Mode unknown"
         private const val DEFAULT_DATE = 0L
 
         fun newIntent(context: Context, isOutdated: Boolean) : Intent {

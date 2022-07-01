@@ -43,6 +43,9 @@ class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
             PriorityTypes.LOW_PRIORITY -> Color.GREEN
         }
         holder.taskCardBackground?.setBackgroundColor(backgroundColor)
+        if(item.isOutdated){
+            holder.taskCardBackground?.setBackgroundColor(Color.GRAY)
+        }
         val dateFormatter = SimpleDateFormat("dd-MM-yyyy", Locale.ROOT)
         val date = taskList[position].taskDate.time
         holder.taskDate?.text = dateFormatter.format(date)
