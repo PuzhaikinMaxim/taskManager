@@ -4,6 +4,9 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -21,12 +24,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var rvTasksList: RecyclerView
     private lateinit var adapter: TaskAdapter
     private lateinit var viewModel: MainViewModel
+    private lateinit var toggle: ActionBarDrawerToggle
+    private lateinit var drawerLayout: DrawerLayout
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         DatabaseInitializer.passContext(this)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        setupSlideMenu()
         parseIntent()
         initViews()
         setupRecyclerView()
@@ -35,6 +42,14 @@ class MainActivity : AppCompatActivity() {
         viewModel.tasks.observe(this){
             adapter.taskList = it
         }
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(toggle.onOptionsItemSelected(item)) {
+
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun initViews(){
@@ -68,6 +83,17 @@ class MainActivity : AppCompatActivity() {
         }
         val itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(rvTasksList)
+    }
+
+    private fun setupSlideMenu() {
+        drawerLayout = findViewById(R.id.drawer_layout)
+        toggle = ActionBarDrawerToggle(this,
+            drawerLayout,
+            R.string.open,
+            R.string.close
+        )
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
     }
 
     private fun parseIntent() {

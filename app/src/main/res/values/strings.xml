@@ -6,4 +6,6 @@
     <string name="description_hint">Описание</string>
     <string name="add_btn_content_description">Добавить задачу</string>
     <string name="activity_main_title">Задачи на сегодня</string>
+    <string name="open">Список разделов меню</string>
+    <string name="close">Список разделов меню</string>
 </resources>
