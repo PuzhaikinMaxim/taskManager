@@ -16,6 +16,7 @@ import com.example.taskmanager.presentation.TaskAdapter
 import com.example.taskmanager.presentation.viewmodels.MainViewModel
 import com.example.taskmanager.presentation.viewmodels.TaskListViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.navigation.NavigationView
 import java.lang.RuntimeException
 
 class MainActivity : AppCompatActivity() {
@@ -46,8 +47,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(toggle.onOptionsItemSelected(item)) {
-
+        if(toggle.onOptionsItemSelected(item)){
+            return true
         }
         return super.onOptionsItemSelected(item)
     }
@@ -94,6 +95,22 @@ class MainActivity : AppCompatActivity() {
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+
+        val navView = findViewById<NavigationView>(R.id.nav_view)
+        navView.setNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.nav_today_tasks -> {
+                    val intent = newIntent(this,false)
+                    startActivity(intent)
+                }
+                R.id.nav_unfinished_tasks -> {
+                    val intent = newIntent(this,true)
+                    startActivity(intent)
+                }
+                else -> TODO()
+            }
+            true
+        }
     }
 
     private fun parseIntent() {
