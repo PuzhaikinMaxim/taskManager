@@ -28,7 +28,7 @@ interface TaskDao {
     @Query("SELECT * FROM tasks WHERE taskDate >= :start AND taskDate < :end")
     fun getTasksInInterval(start: GregorianCalendar, end: GregorianCalendar): List<TaskTable>
 
-    @Query("SELECT taskDate as dayL, count(*) as amountOfAllTasks, count(isDone) as amountOfCompletedTasks FROM tasks WHERE taskDate >= :start AND taskDate <= :end GROUP BY taskDate")
+    @Query("SELECT taskDate as dayL, count(*) as amountOfAllTasks, count(CASE WHEN isDone THEN 1 END) as amountOfCompletedTasks FROM tasks WHERE taskDate >= :start AND taskDate <= :end GROUP BY taskDate")
     fun getTasksDates(start: GregorianCalendar, end: GregorianCalendar): List<DayData>
 
     @Query("SELECT * FROM tasks WHERE isOutdated == :isOutdated")

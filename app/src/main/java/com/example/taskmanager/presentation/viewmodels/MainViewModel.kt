@@ -24,7 +24,9 @@ class MainViewModel : ViewModel() {
     }
 
     fun getTasksByDay(day: Long) {
-        getTasksByDay(day)
+        val gregDay = GregorianCalendar()
+        gregDay.timeInMillis = day
+        getTasksListByDayUseCase.getTasksListByDay(gregDay)
     }
 
     fun getTodayTasks() {
@@ -38,7 +40,7 @@ class MainViewModel : ViewModel() {
 
     fun changeReadyState(task: Task) {
         val newTask = task.copy(isDone = !task.isDone)
-        editTaskUseCase.editTask(task)
+        editTaskUseCase.editTask(newTask)
     }
 
     init {

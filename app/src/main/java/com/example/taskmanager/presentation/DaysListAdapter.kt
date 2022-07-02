@@ -38,6 +38,9 @@ class DaysListAdapter : RecyclerView.Adapter<DaysListAdapter.DaysListViewHolder>
         if(day.isEveryTaskDone){
             holder.layoutDay?.setBackgroundColor(Color.GREEN)
         }
+        holder.itemView.setOnClickListener {
+            onDayItemListener?.invoke(day)
+        }
     }
 
     override fun getItemCount(): Int {

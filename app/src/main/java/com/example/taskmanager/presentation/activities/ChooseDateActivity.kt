@@ -14,6 +14,7 @@ import com.example.taskmanager.R
 import com.example.taskmanager.presentation.DaysListAdapter
 import com.example.taskmanager.presentation.viewmodels.ChooseDateViewModel
 import com.google.android.material.navigation.NavigationView
+import java.util.*
 
 class ChooseDateActivity : AppCompatActivity() {
 
@@ -82,6 +83,15 @@ class ChooseDateActivity : AppCompatActivity() {
         rvDaysList.adapter = daysListAdapter
         chooseDateViewModel.datesList.observe(this){
             daysListAdapter.daysList = it
+        }
+        daysListAdapter.onDayItemListener = {
+            val day = GregorianCalendar(
+                chooseDateViewModel.currentYear.value!!,
+                chooseDateViewModel.currentMonth.value!!,
+                it.dayOfMonth
+            )
+            val intent = MainActivity.newIntent(this,day.timeInMillis)
+            startActivity(intent)
         }
     }
 

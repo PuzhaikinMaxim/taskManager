@@ -45,6 +45,9 @@ class MainActivity : AppCompatActivity() {
         viewModel.tasks.observe(this){
             adapter.taskList = it
         }
+        adapter.onLongClickTaskItemListener = {
+            viewModel.changeReadyState(it)
+        }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 

@@ -17,6 +17,7 @@ import java.util.*
 class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     var onTaskItemListener: ((Task)-> Unit)? = null
+    var onLongClickTaskItemListener: ((Task)-> Unit)? = null
 
     var taskList: List<Task> = listOf()
         set(value) {
@@ -46,11 +47,18 @@ class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
         if(item.isOutdated){
             holder.taskCardBackground?.setBackgroundColor(Color.GRAY)
         }
+        if(item.isDone){
+            holder.taskCardBackground?.setBackgroundColor(Color.MAGENTA)
+        }
         val dateFormatter = SimpleDateFormat("dd-MM-yyyy", Locale.ROOT)
         val date = taskList[position].taskDate.time
         holder.taskDate?.text = dateFormatter.format(date)
         holder.itemView.setOnClickListener {
             onTaskItemListener?.invoke(item)
+        }
+        holder.itemView.setOnLongClickListener {
+            onLongClickTaskItemListener?.invoke(item)
+            true
         }
     }
 
