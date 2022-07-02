@@ -11,15 +11,16 @@
     >
 
     <LinearLayout
-        android:layout_height="65dp"
-        android:layout_width="65dp"
+        android:id="@+id/l_day"
+        android:layout_height="50dp"
+        android:layout_width="50dp"
         android:background="@color/light_gray"
         android:orientation="horizontal"
         android:gravity="center"
         >
 
         <TextView
-            android:id="@+id/tv_date"
+            android:id="@+id/tv_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"

@@ -109,6 +109,10 @@ class MainActivity : AppCompatActivity() {
                     val intent = newIntent(this,true)
                     startActivity(intent)
                 }
+                R.id.nav_all_tasks -> {
+                    val intent = ChooseDateActivity.newIntent(this)
+                    startActivity(intent)
+                }
                 else -> TODO()
             }
             true

@@ -68,9 +68,10 @@ object TaskManagerRepositoryImpl : TaskManagerRepository {
     override fun getTaskDatesList(start: GregorianCalendar,
                          end: GregorianCalendar): LiveData<List<Day>> {
         val datesList = mutableListOf<Day>()
-        for(i in 0 until start.getMaximum(GregorianCalendar.DAY_OF_MONTH)){
+        for(i in 0 until start.getActualMaximum(GregorianCalendar.DAY_OF_MONTH)){
             datesList.add(Day(i+1,false))
         }
+        println(start.getActualMaximum(GregorianCalendar.DAY_OF_MONTH))
         val datesData = taskDatabase.taskDao().getTasksDates(start, end)
         for(dateData in datesData){
             val date = GregorianCalendar()
@@ -82,7 +83,7 @@ object TaskManagerRepositoryImpl : TaskManagerRepository {
                 isEveryTaskDone = true
 
             val day = Day(dayOfMonth,isEveryTaskDone,false)
-            datesList[dayOfMonth] = day
+            datesList[dayOfMonth-1] = day
         }
         datesListLD.value = datesList
         return datesListLD

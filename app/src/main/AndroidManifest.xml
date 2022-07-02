@@ -12,6 +12,9 @@
         <activity android:name=".presentation.activities.TaskActivity">
 
         </activity>
+        <activity android:name=".presentation.activities.ChooseDateActivity">
+
+        </activity>
         <activity
             android:name=".presentation.activities.MainActivity"
             android:exported="true">
