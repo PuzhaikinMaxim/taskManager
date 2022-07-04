@@ -1,6 +1,7 @@
 package com.example.taskmanager.data
 
 import androidx.room.*
+import com.example.taskmanager.domain.PriorityTypes
 import com.example.taskmanager.domain.Task
 import java.util.*
 
@@ -30,6 +31,16 @@ interface TaskDao {
 
     @Query("SELECT taskDate as dayL, count(*) as amountOfAllTasks, count(CASE WHEN isDone THEN 1 END) as amountOfCompletedTasks FROM tasks WHERE taskDate >= :start AND taskDate <= :end GROUP BY taskDate")
     fun getTasksDates(start: GregorianCalendar, end: GregorianCalendar): List<DayData>
+
+    @Query("SELECT count(*) as amountOfAllTasks, count(CASE WHEN isDone THEN 1 END) as amountOfCompletedTasks, count(CASE WHEN priorityType = :highPriority THEN 1 END) as amountOfTasksWithHighPriority, count(CASE WHEN priorityType = :mediumPriority THEN 1 END) as amountOfTasksWithMediumPriority, count(CASE WHEN priorityType = :lowPriority THEN 1 END) as amountOfTasksWithLowPriority, count(CASE WHEN isOutdated THEN 1 END) as amountOfOutdatedTasks FROM tasks")
+    fun getBasicStatistics(
+        highPriority: PriorityTypes = PriorityTypes.HIGH_PRIORITY,
+        mediumPriority: PriorityTypes = PriorityTypes.MEDIUM_PRIORITY,
+        lowPriority: PriorityTypes = PriorityTypes.LOW_PRIORITY,
+    ): BasicStatistics
+
+    @Query("SELECT count(*) as amountOfTodayTasks, count(CASE WHEN isDone THEN 1 END) as amountOfTodayCompletedTasks FROM tasks WHERE taskDate = :gregorianCalendar")
+    fun getTodayStatistics(gregorianCalendar: GregorianCalendar): TodayStatistics
 
     @Query("SELECT * FROM tasks WHERE isOutdated == :isOutdated")
     fun getOutdatedTasks(isOutdated: Boolean = OUTDATED): List<TaskTable>

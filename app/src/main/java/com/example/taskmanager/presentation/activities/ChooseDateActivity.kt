@@ -14,6 +14,7 @@ import com.example.taskmanager.R
 import com.example.taskmanager.presentation.DaysListAdapter
 import com.example.taskmanager.presentation.viewmodels.ChooseDateViewModel
 import com.google.android.material.navigation.NavigationView
+import java.lang.RuntimeException
 import java.util.*
 
 class ChooseDateActivity : AppCompatActivity() {
@@ -71,7 +72,11 @@ class ChooseDateActivity : AppCompatActivity() {
                     val intent = newIntent(this)
                     startActivity(intent)
                 }
-                else -> TODO()
+                R.id.nav_statistics -> {
+                    val intent = StatisticsActivity.newIntent(this)
+                    startActivity(intent)
+                }
+                else -> throw RuntimeException("Раздел не найден")
             }
             true
         }

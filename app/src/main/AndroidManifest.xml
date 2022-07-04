@@ -15,6 +15,9 @@
         <activity android:name=".presentation.activities.ChooseDateActivity">
 
         </activity>
+        <activity android:name=".presentation.activities.StatisticsActivity">
+
+        </activity>
         <activity
             android:name=".presentation.activities.MainActivity"
             android:exported="true">

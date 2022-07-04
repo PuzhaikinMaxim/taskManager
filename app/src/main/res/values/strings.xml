@@ -9,4 +9,8 @@
     <string name="activity_main_title_unfinished">Невыполненные задачи</string>
     <string name="open">Список разделов меню</string>
     <string name="close">Список разделов меню</string>
+    <string name="amount_of_tasks">Задач всего: %s из них выполнено: %s</string>
+    <string name="outdated_tasks">Задач просрочено: %s</string>
+    <string name="today_task">Задач на сегодня: %s из них выполнено: %s</string>
+    <string name="amount_priority_tasks">Количество задач с высоким приоритетом: %s со средним приоритетом: %s с низким приоритетом: %s</string>
 </resources>

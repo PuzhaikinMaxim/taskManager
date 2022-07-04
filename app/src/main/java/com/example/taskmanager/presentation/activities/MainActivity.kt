@@ -116,7 +116,11 @@ class MainActivity : AppCompatActivity() {
                     val intent = ChooseDateActivity.newIntent(this)
                     startActivity(intent)
                 }
-                else -> TODO()
+                R.id.nav_statistics -> {
+                    val intent = StatisticsActivity.newIntent(this)
+                    startActivity(intent)
+                }
+                else -> throw RuntimeException("Раздел не найден")
             }
             true
         }

@@ -17,6 +17,8 @@ interface TaskManagerRepository {
 
     fun getOutdatedTasks(): LiveData<List<Task>>
 
+    fun getStatistics(): LiveData<Statistics>
+
     fun getTask(id: Int): Task
 
     fun addTask(task: Task)

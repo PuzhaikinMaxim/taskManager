@@ -3,6 +3,7 @@ package com.example.taskmanager.data
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.taskmanager.domain.Day
+import com.example.taskmanager.domain.Statistics
 import com.example.taskmanager.domain.Task
 import com.example.taskmanager.domain.TaskManagerRepository
 import java.lang.RuntimeException
@@ -97,6 +98,22 @@ object TaskManagerRepositoryImpl : TaskManagerRepository {
         }
         updateList()
         return tasksListLD
+    }
+
+    override fun getStatistics(): LiveData<Statistics> {
+        val basicStatistics = taskDatabase.taskDao().getBasicStatistics()
+        val todayStatistics = taskDatabase.taskDao().getTodayStatistics(getTodayDate())
+        val statistics = Statistics(
+            basicStatistics.amountOfAllTasks,
+            basicStatistics.amountOfCompletedTasks,
+            basicStatistics.amountOfTasksWithHighPriority,
+            basicStatistics.amountOfTasksWithMediumPriority,
+            basicStatistics.amountOfTasksWithLowPriority,
+            basicStatistics.amountOfOutdatedTasks,
+            todayStatistics.amountOfTodayTasks,
+            todayStatistics.amountOfTodayCompletedTasks
+        )
+        return MutableLiveData(statistics)
     }
 
     override fun getTask(id: Int): Task {
