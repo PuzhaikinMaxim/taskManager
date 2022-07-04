@@ -1,5 +1,6 @@
 package com.example.taskmanager.presentation
 
+import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -21,11 +22,13 @@ class DaysListAdapter : RecyclerView.Adapter<DaysListAdapter.DaysListViewHolder>
             diffResult.dispatchUpdatesTo(this)
             field = value
         }
+    private lateinit var context: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DaysListViewHolder {
         val itemView = LayoutInflater.
         from(parent.context).
         inflate(R.layout.item_day,parent,false)
+        context = parent.context
         return DaysListViewHolder(itemView)
     }
 
@@ -35,8 +38,12 @@ class DaysListAdapter : RecyclerView.Adapter<DaysListAdapter.DaysListViewHolder>
         if(day.isEmpty){
             holder.layoutDay?.setBackgroundColor(Color.LTGRAY)
         }
-        if(day.isEveryTaskDone){
+        else if(day.isEveryTaskDone){
             holder.layoutDay?.setBackgroundColor(Color.GREEN)
+            println(day.dayOfMonth)
+        }
+        else {
+            holder.layoutDay?.setBackgroundColor(context.getColor(R.color.light_gray))
         }
         holder.itemView.setOnClickListener {
             onDayItemListener?.invoke(day)
