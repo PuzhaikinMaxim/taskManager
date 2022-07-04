@@ -14,4 +14,21 @@
     <string name="outdated_tasks">Задач просрочено: %s</string>
     <string name="today_task">Задач на сегодня: %s из них выполнено: %s</string>
     <string name="amount_priority_tasks">Количество задач с высоким приоритетом: %s со средним приоритетом: %s с низким приоритетом: %s</string>
+    <string name="task_name">Задача: %s</string>
+    <string name="task_description">Описание: %s</string>
+    <string name="task_date">Дата: %s</string>
+    <string-array name="month_names">
+        <item>Январь</item>
+        <item>Февраль</item>
+        <item>Март</item>
+        <item>Апрель</item>
+        <item>Май</item>
+        <item>Июнь</item>
+        <item>Июль</item>
+        <item>Август</item>
+        <item>Сентябрь</item>
+        <item>Октябрь</item>
+        <item>Ноябрь</item>
+        <item>Декабрь</item>
+    </string-array>
 </resources>

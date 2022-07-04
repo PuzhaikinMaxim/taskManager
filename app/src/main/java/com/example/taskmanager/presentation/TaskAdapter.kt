@@ -1,9 +1,11 @@
 package com.example.taskmanager.presentation
 
+import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
@@ -18,6 +20,7 @@ class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     var onTaskItemListener: ((Task)-> Unit)? = null
     var onLongClickTaskItemListener: ((Task)-> Unit)? = null
+    private lateinit var context: Context
 
     var taskList: List<Task> = listOf()
         set(value) {
@@ -31,13 +34,17 @@ class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
         val itemView = LayoutInflater.
         from(parent.context).
         inflate(R.layout.item_task,parent,false)
+        context = parent.context
         return TaskViewHolder(itemView)
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         val item = taskList[position]
-        holder.taskText?.text = item.taskName
-        holder.taskDescription?.text = item.taskDescription
+        holder.taskText?.text = context.getString(R.string.task_name, item.taskName)
+        holder.taskDescription?.text = context.getString(
+            R.string.task_description,
+            item.taskDescription
+        )
         val backgroundColor = when(item.priorityType) {
             PriorityTypes.HIGH_PRIORITY -> Color.RED
             PriorityTypes.MEDIUM_PRIORITY -> Color.YELLOW
@@ -48,11 +55,14 @@ class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
             holder.taskCardBackground?.setBackgroundColor(Color.GRAY)
         }
         if(item.isDone){
-            holder.taskCardBackground?.setBackgroundColor(Color.MAGENTA)
+            holder.ivCompletionImage?.setImageResource(R.drawable.check_mark)
+        }
+        else{
+            holder.ivCompletionImage?.setImageResource(R.drawable.in_progress)
         }
         val dateFormatter = SimpleDateFormat("dd-MM-yyyy", Locale.ROOT)
         val date = taskList[position].taskDate.time
-        holder.taskDate?.text = dateFormatter.format(date)
+        holder.taskDate?.text = context.getString(R.string.task_date, dateFormatter.format(date))
         holder.itemView.setOnClickListener {
             onTaskItemListener?.invoke(item)
         }
@@ -71,12 +81,14 @@ class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
         var taskDescription: TextView? = null
         var taskDate: TextView? = null
         var taskCardBackground: ConstraintLayout? = null
+        var ivCompletionImage: ImageView? = null
 
         init {
             taskText = itemView.findViewById(R.id.taskText)
             taskDescription = itemView.findViewById(R.id.taskDescription)
             taskDate = itemView.findViewById(R.id.taskDate)
             taskCardBackground = itemView.findViewById(R.id.taskCardBackground)
+            ivCompletionImage = itemView.findViewById(R.id.iv_completion_image)
         }
     }
 }

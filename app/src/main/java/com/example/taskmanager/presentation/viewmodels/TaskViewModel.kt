@@ -132,11 +132,7 @@ class TaskViewModel : ViewModel() {
             _errorInputDate.value = true
             isFieldsFilledCorrect = false
         }
-        val today = GregorianCalendar(
-            GregorianCalendar.YEAR,
-            GregorianCalendar.MONTH,
-            GregorianCalendar.DAY_OF_MONTH
-        )
+        val today = getTodayDate()
         if(taskDate != defaultDate && taskDate < today){
             _errorInputDate.value = true
             isFieldsFilledCorrect = false
@@ -162,6 +158,15 @@ class TaskViewModel : ViewModel() {
 
     private fun finishWork() {
         _shouldCloseScreen.value = Unit
+    }
+
+    private fun getTodayDate() : GregorianCalendar{
+        val today = GregorianCalendar()
+        return GregorianCalendar(
+            today.get(GregorianCalendar.YEAR),
+            today.get(GregorianCalendar.MONTH),
+            today.get(GregorianCalendar.DAY_OF_MONTH)
+        )
     }
 
     companion object {

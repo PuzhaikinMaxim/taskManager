@@ -28,11 +28,13 @@ class ChooseDateActivity : AppCompatActivity() {
     private lateinit var daysListAdapter: DaysListAdapter
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var months: Array<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_choose_day)
         chooseDateViewModel = ViewModelProvider(this).get(ChooseDateViewModel::class.java)
+        months = resources.getStringArray(R.array.month_names)
         setupButtons()
         setupTextViews()
         setupRecyclerView()
@@ -104,7 +106,7 @@ class ChooseDateActivity : AppCompatActivity() {
         tvYear = findViewById(R.id.tv_year)
         tvMonth = findViewById(R.id.tv_month)
         chooseDateViewModel.currentMonth.observe(this){
-            tvMonth.text = (it+1).toString()
+            tvMonth.text = months[it]
         }
         chooseDateViewModel.currentYear.observe(this){
             tvYear.text = it.toString()

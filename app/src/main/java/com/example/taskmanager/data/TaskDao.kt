@@ -42,7 +42,7 @@ interface TaskDao {
     @Query("SELECT count(*) as amountOfTodayTasks, count(CASE WHEN isDone THEN 1 END) as amountOfTodayCompletedTasks FROM tasks WHERE taskDate = :gregorianCalendar")
     fun getTodayStatistics(gregorianCalendar: GregorianCalendar): TodayStatistics
 
-    @Query("SELECT * FROM tasks WHERE isOutdated == :isOutdated")
+    @Query("SELECT * FROM tasks WHERE isOutdated == :isOutdated AND NOT isDone")
     fun getOutdatedTasks(isOutdated: Boolean = OUTDATED): List<TaskTable>
 
     @Query("SELECT * FROM tasks")

@@ -15,7 +15,6 @@ import com.example.taskmanager.R
 import com.example.taskmanager.data.DatabaseInitializer
 import com.example.taskmanager.presentation.TaskAdapter
 import com.example.taskmanager.presentation.viewmodels.MainViewModel
-import com.example.taskmanager.presentation.viewmodels.TaskListViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import java.lang.RuntimeException

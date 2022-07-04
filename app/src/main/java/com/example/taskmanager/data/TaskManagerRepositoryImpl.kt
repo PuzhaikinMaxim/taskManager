@@ -30,9 +30,6 @@ object TaskManagerRepositoryImpl : TaskManagerRepository {
             println(data)
         }
         val d = taskDatabase.taskDao().getTasks()
-        for(task in d){
-            println(task)
-        }
     }
 
     override fun getTasksList(): LiveData<List<Task>> {
@@ -53,15 +50,9 @@ object TaskManagerRepositoryImpl : TaskManagerRepository {
     override fun getTasksList(date: GregorianCalendar) : LiveData<List<Task>> {
         tasksList.clear()
         val taskTableList = taskDatabase.taskDao().getTasksByDay(date)
-        println("-----------------------------------------")
-        println(date.toString())
-        var cnt = 0
         for(item in taskTableList){
-            println(++cnt)
-            println(item.toString())
             tasksList.add(TaskConverter.convertFromTable(item))
         }
-        println(tasksList)
         updateList()
         return tasksListLD
     }
@@ -72,7 +63,6 @@ object TaskManagerRepositoryImpl : TaskManagerRepository {
         for(i in 0 until start.getActualMaximum(GregorianCalendar.DAY_OF_MONTH)){
             datesList.add(Day(i+1,false))
         }
-        println(start.getActualMaximum(GregorianCalendar.DAY_OF_MONTH))
         val datesData = taskDatabase.taskDao().getTasksDates(start, end)
         for(dateData in datesData){
             val date = GregorianCalendar()
@@ -124,6 +114,8 @@ object TaskManagerRepositoryImpl : TaskManagerRepository {
 
     override fun addTask(task: Task) {
         task.id = autoIncrementId++
+        if(task.taskDate < getTodayDate())
+            task.isOutdated = true
         tasksList.add(task)
         taskDatabase.taskDao().addTask(TaskConverter.convertToTable(task))
         updateList()
@@ -131,6 +123,7 @@ object TaskManagerRepositoryImpl : TaskManagerRepository {
 
     override fun editTask(task: Task) {
         val taskToDelete = getTask(task.id)
+        task.isOutdated = task.taskDate < getTodayDate()
         tasksList.remove(taskToDelete)
         tasksList.add(task)
         taskDatabase.taskDao().updateTask(TaskConverter.convertToTable(task))
@@ -156,5 +149,4 @@ object TaskManagerRepositoryImpl : TaskManagerRepository {
             today.get(GregorianCalendar.DAY_OF_MONTH)
         )
     }
-
 }
