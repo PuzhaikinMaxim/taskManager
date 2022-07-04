@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
+    private var date = DEFAULT_DATE
     private var screenMode = MODE_UNKNOWN
 
 
@@ -47,6 +48,10 @@ class MainActivity : AppCompatActivity() {
         }
         adapter.onLongClickTaskItemListener = {
             viewModel.changeReadyState(it)
+        }
+        adapter.onTaskItemListener = {
+            val intent = TaskActivity.newIntentEditItem(this,it.id, screenMode, date)
+            startActivity(intent)
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
@@ -127,23 +132,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun parseIntent() {
+        val tvTitle = findViewById<TextView>(R.id.tv_activity_main_title)
         if(!intent.hasExtra(EXTRA_MODE)){
             viewModel.getTodayTasks()
+            screenMode = MODE_TODAY
             return
         }
         val extraMode = intent.getStringExtra(EXTRA_MODE)
         if(extraMode != MODE_DATE && extraMode != MODE_OUTDATED && extraMode != MODE_TODAY){
-            throw RuntimeException("Mode don't found")
+            throw RuntimeException("Mode not found")
         }
+        screenMode = extraMode
         if(extraMode == MODE_DATE){
             val dateL = intent.getLongExtra(EXTRA_DATE, DEFAULT_DATE)
             viewModel.getTasksByDay(dateL)
+            viewModel.header.observe(this){
+                tvTitle.text = getString(R.string.tasks_at_title, it)
+            }
+            date = dateL
         }
         if(extraMode == MODE_TODAY){
             viewModel.getTodayTasks()
         }
         if(extraMode == MODE_OUTDATED){
-            val tvTitle = findViewById<TextView>(R.id.tv_activity_main_title)
             tvTitle.text = getString(R.string.activity_main_title_unfinished)
             viewModel.getOutdatedTasks()
         }
@@ -151,7 +162,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupAddButton() {
         buttonAddTask.setOnClickListener {
-            val intent = TaskActivity.newIntentAddItem(this)
+            val intent = TaskActivity.newIntentAddItem(this, screenMode, date)
             startActivity(intent)
         }
     }
@@ -172,6 +183,13 @@ class MainActivity : AppCompatActivity() {
                 intent.putExtra(EXTRA_MODE, MODE_OUTDATED)
             else
                 intent.putExtra(EXTRA_MODE, MODE_TODAY)
+            return intent
+        }
+
+        fun newIntent(context: Context, extraMode: String, extraDate: Long) : Intent {
+            val intent = Intent(context, MainActivity::class.java)
+            intent.putExtra(EXTRA_MODE, extraMode)
+            intent.putExtra(EXTRA_DATE, extraDate)
             return intent
         }
 

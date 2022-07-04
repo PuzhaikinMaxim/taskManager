@@ -1,4 +1,5 @@
 <resources>
+    <string name="tasks_at_title">Задачи на: %s</string>
     <string name="app_name">Менеджер задач</string>
     <string name="text_hint">Текст задачи</string>
     <string name="date_hint">Дата окончания</string>

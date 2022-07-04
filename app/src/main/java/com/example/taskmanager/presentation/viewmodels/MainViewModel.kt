@@ -1,5 +1,7 @@
 package com.example.taskmanager.presentation.viewmodels
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.taskmanager.data.TaskManagerRepositoryImpl
 import com.example.taskmanager.domain.Task
@@ -17,6 +19,10 @@ class MainViewModel : ViewModel() {
     private val getTasksListUseCase = GetTasksListUseCase(repository)
     private val getOutdatedTasksUseCase = GetOutdatedTasksUseCase(repository)
 
+    private val _header = MutableLiveData<String>()
+    val header: LiveData<String>
+        get() = _header
+
     val tasks = getTasksListUseCase.getTasksList()
 
     fun removeTask(task: Task){
@@ -27,6 +33,8 @@ class MainViewModel : ViewModel() {
         val gregDay = GregorianCalendar()
         gregDay.timeInMillis = day
         getTasksListByDayUseCase.getTasksListByDay(gregDay)
+        val dateFormatter = SimpleDateFormat("dd-MM-yyyy", Locale.ROOT)
+        _header.value = dateFormatter.format(gregDay.time)
     }
 
     fun getTodayTasks() {

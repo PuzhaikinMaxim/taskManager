@@ -12,6 +12,8 @@ class TaskActivity : AppCompatActivity(), TaskFragment.OnEditingFinishedListener
 
     private var screenMode = MODE_UNKNOWN
     private var toDoTaskId = Task.UNDEFINED_ID
+    private var mainScreenMode = MODE_UNKNOWN
+    private var mainSelectedDate = DEFAULT_DATE
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +51,11 @@ class TaskActivity : AppCompatActivity(), TaskFragment.OnEditingFinishedListener
             }
             toDoTaskId = intent.getIntExtra(EXTRA_TASK_ITEM_ID, Task.UNDEFINED_ID)
         }
+        if(!intent.hasExtra(PREVIOUS_EXTRA_MODE) || !intent.hasExtra(PREVIOUS_EXTRA_DATE))
+                throw RuntimeException("Previous mode and date are missing")
+        mainScreenMode = intent.getStringExtra(PREVIOUS_EXTRA_MODE)!!
+        println(mainScreenMode)
+        mainSelectedDate = intent.getLongExtra(PREVIOUS_EXTRA_DATE, DEFAULT_DATE)
     }
 
     companion object {
@@ -58,23 +65,36 @@ class TaskActivity : AppCompatActivity(), TaskFragment.OnEditingFinishedListener
         private const val MODE_ADD = "mode_add"
         private const val EXTRA_TASK_ITEM_ID = "extra_task_item_id"
         private const val MODE_UNKNOWN = "mode_unknown"
+        private const val DEFAULT_DATE = 0L
+        private const val PREVIOUS_EXTRA_MODE = "previous_mode"
+        private const val PREVIOUS_EXTRA_DATE = "previous_date"
 
-        fun newIntentEditItem(context: Context, id: Int) : Intent {
+        fun newIntentEditItem(context: Context,
+                              id: Int,
+                              extraScreenMode: String,
+                              extraDate: Long
+        ) : Intent {
             val intent = Intent(context, TaskActivity::class.java)
             intent.putExtra(EXTRA_SCREEN_MODE, MODE_EDIT)
             intent.putExtra(EXTRA_TASK_ITEM_ID, id)
+            intent.putExtra(PREVIOUS_EXTRA_MODE, extraScreenMode)
+            intent.putExtra(PREVIOUS_EXTRA_DATE, extraDate)
             return intent
         }
 
-        fun newIntentAddItem(context: Context) : Intent {
+        fun newIntentAddItem(context: Context,
+                             extraScreenMode: String,
+                             extraDate: Long) : Intent {
             val intent = Intent(context, TaskActivity::class.java)
             intent.putExtra(EXTRA_SCREEN_MODE, MODE_ADD)
+            intent.putExtra(PREVIOUS_EXTRA_MODE, extraScreenMode)
+            intent.putExtra(PREVIOUS_EXTRA_DATE, extraDate)
             return intent
         }
     }
 
     override fun onEditingFinished() {
-        val intent = MainActivity.newIntent(this,false)
+        val intent = MainActivity.newIntent(this, mainScreenMode, mainSelectedDate)
         startActivity(intent)
     }
 }
