@@ -7,7 +7,7 @@
     </style>
 
     <style name="Layout">
-        <item name="android:background">@color/dark_gray</item>
+        <item name="android:background">@color/white</item>
     </style>
 
     <style name="TextInputEditText">

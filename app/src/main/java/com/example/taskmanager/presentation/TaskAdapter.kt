@@ -46,9 +46,9 @@ class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
             item.taskDescription
         )
         val backgroundColor = when(item.priorityType) {
-            PriorityTypes.HIGH_PRIORITY -> Color.RED
-            PriorityTypes.MEDIUM_PRIORITY -> Color.YELLOW
-            PriorityTypes.LOW_PRIORITY -> Color.GREEN
+            PriorityTypes.HIGH_PRIORITY -> context.getColor(R.color.light_red)
+            PriorityTypes.MEDIUM_PRIORITY -> context.getColor(R.color.light_yellow)
+            PriorityTypes.LOW_PRIORITY -> context.getColor(R.color.light_green)
         }
         holder.taskCardBackground?.setBackgroundColor(backgroundColor)
         if(item.isOutdated){

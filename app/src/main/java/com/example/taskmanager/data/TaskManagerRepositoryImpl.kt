@@ -138,7 +138,7 @@ object TaskManagerRepositoryImpl : TaskManagerRepository {
     }
 
     private fun updateList() {
-        tasksListLD.value = tasksList.toList()
+        tasksListLD.value = tasksList.toList().sortedByDescending { Task -> Task.priorityType }
     }
 
     private fun getTodayDate() : GregorianCalendar{

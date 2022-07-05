@@ -39,11 +39,11 @@ class DaysListAdapter : RecyclerView.Adapter<DaysListAdapter.DaysListViewHolder>
             holder.layoutDay?.setBackgroundColor(Color.LTGRAY)
         }
         else if(day.isEveryTaskDone){
-            holder.layoutDay?.setBackgroundColor(Color.GREEN)
+            holder.layoutDay?.setBackgroundColor(context.getColor(R.color.light_green))
             println(day.dayOfMonth)
         }
         else {
-            holder.layoutDay?.setBackgroundColor(context.getColor(R.color.light_gray))
+            holder.layoutDay?.setBackgroundColor(context.getColor(R.color.light_yellow))
         }
         holder.itemView.setOnClickListener {
             onDayItemListener?.invoke(day)

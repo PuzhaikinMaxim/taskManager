@@ -4,12 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import com.example.taskmanager.R
+import com.example.taskmanager.domain.Statistics
 import com.example.taskmanager.presentation.viewmodels.StatisticsViewModel
 import com.google.android.material.navigation.NavigationView
 import java.lang.RuntimeException
@@ -21,6 +23,8 @@ class StatisticsActivity : AppCompatActivity() {
     private lateinit var tvAmountOfPriorityTasks: TextView
     private lateinit var tvAmountOfOutdatedTasks: TextView
     private lateinit var tvTodayTasksAmount: TextView
+    private lateinit var pbAmountOfTasks: ProgressBar
+    private lateinit var pbTodayTasksAmount: ProgressBar
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
 
@@ -81,6 +85,8 @@ class StatisticsActivity : AppCompatActivity() {
         tvAmountOfPriorityTasks = findViewById(R.id.tv_amount_of_priority_tasks)
         tvAmountOfOutdatedTasks = findViewById(R.id.tv_amount_of_outdated_tasks)
         tvTodayTasksAmount = findViewById(R.id.tv_today_tasks_amount)
+        pbAmountOfTasks = findViewById(R.id.pb_amount_of_tasks)
+        pbTodayTasksAmount = findViewById(R.id.pb_today_task_amount)
     }
 
     private fun setTextViewText(){
@@ -105,7 +111,15 @@ class StatisticsActivity : AppCompatActivity() {
                 it.amountOfTodayTasks.toString(),
                 it.amountOfTodayCompletedTasks.toString()
             )
+            setProgressBarStatistics(it)
         }
+    }
+
+    private fun setProgressBarStatistics(stat: Statistics) {
+        pbAmountOfTasks.max = stat.amountOfAllTasks
+        pbAmountOfTasks.progress = stat.amountOfCompletedTasks
+        pbTodayTasksAmount.max = stat.amountOfTodayTasks
+        pbTodayTasksAmount.progress = stat.amountOfTodayCompletedTasks
     }
 
     companion object {

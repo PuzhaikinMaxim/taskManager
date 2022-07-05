@@ -20,7 +20,7 @@ interface TaskDao {
     @Query("SELECT max(id) FROM tasks")
     fun getLastTaskId(): Int
 
-    @Query("UPDATE tasks SET isOutdated = :isOutdated WHERE taskDate < :today")
+    @Query("UPDATE tasks SET isOutdated = :isOutdated WHERE taskDate < :today AND NOT isDone")
     fun updateOutdatedTasks(today: GregorianCalendar, isOutdated: Boolean = OUTDATED)
 
     @Query("SELECT * FROM tasks WHERE taskDate == :gregorianCalendar")
